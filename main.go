@@ -17,7 +17,7 @@ func main() {
 	helpers.SetupPostgreSQL()
 
 	// load redis
-	// helpers.SetupRedis()
+	helpers.SetupRedis()
 
 	// load kafka
 	// cmd.ServeKafka()
