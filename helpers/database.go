@@ -29,5 +29,5 @@ func SetupPostgreSQL() {
 	}
 	logrus.Info("successfully connect to database...")
 
-	DB.AutoMigrate(&models.Product{}, &models.ProductCategory{}, &models.ProductVariant{})
+	DB.AutoMigrate(&models.Product{}, &models.ProductCategory{}, &models.ProductVariants{})
 }

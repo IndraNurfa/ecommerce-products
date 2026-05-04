@@ -6,6 +6,8 @@ require (
 	github.com/go-playground/validator/v10 v10.30.2
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v5 v5.0.4
+	github.com/lib/pq v1.12.3
+	github.com/pkg/errors v0.9.1
 	github.com/redis/go-redis/v9 v9.18.0
 	github.com/sirupsen/logrus v1.9.4
 	gorm.io/driver/postgres v1.6.0
