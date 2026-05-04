@@ -2,26 +2,31 @@ package helpers
 
 import (
 	"context"
+	"strings"
 
 	"github.com/redis/go-redis/v9"
 )
 
-var ctx = context.Background()
-var RedisClient *redis.Client
+var RedisClient *redis.ClusterClient
 
 func SetupRedis() {
-	client := redis.NewClient(&redis.Options{
-		Addr:     GetEnv("REDIS_HOST", "localhost:6379"),
-		Password: "", // no password set
-		DB:       0,  // use default DB
+
+	client := redis.NewClusterClient(&redis.ClusterOptions{
+		Addrs: strings.Split(GetEnv("REDIS_HOST", "localhost:6379"), ","),
 	})
 
-	defer client.Close()
+	ctx := context.Background()
 
-	ping, err := client.Ping(ctx).Result()
+	// Better than Ping for cluster validation
+	err := client.ForEachShard(ctx, func(ctx context.Context, shard *redis.Client) error {
+		return shard.Ping(ctx).Err()
+	})
 
 	if err != nil {
-		Logger.Error("Failed to connect redis: " + ping)
+		Logger.Error("Failed to connect redis: ", err)
+		return
 	}
-	Logger.Info("PING REDIS: " + ping)
+	Logger.Info("Redis cluster connected successfully")
+
+	RedisClient = client
 }
